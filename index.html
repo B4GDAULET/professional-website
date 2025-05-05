@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="java/java.js">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<body>
+    <div id="particles-js"></div>
+
+<script>
+    // Инициализация частиц
+    particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#00ff88"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#00ff88",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 6,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            }
+        },
+        "retina_detect": true
+    });
+</script>
+    <div id="particles"></div>
+<div class="cursor"></div>
+<div class="cursor-inner"></div>
+.
+.
+.
+.
+..
+.0
+<!-- герой-секция -->
+<section class="stats" style="padding: 4rem 5%">
+    <div class="stats-grid">
+        <div class="stat-item gradient-border">
+            <div class="stat-number" data-count="97">0</div>
+            <div class="stat-label">Трудоустройство (%)</div>
+        </div>
+        <div class="stat-item gradient-border">
+            <div class="stat-number" data-count="2300">0</div>
+            <div class="stat-label">Выпускников</div>
+        </div>
+        <div class="stat-item gradient-border">
+            <div class="stat-number" data-count="85">0</div>
+            <div class="stat-label">Средняя зарплата ($)</div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Частицы на фоне
+    function initParticles() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.style.position = 'fixed';
+        canvas.style.zIndex = -1;
+        document.getElementById('particles').appendChild(canvas);
+
+        // ... код анимации частиц ...
+    }
+    // Инициализация
+    window.addEventListener('load', () => {
+        initParticles();
+        animateNumbers();
+    });
+
+         // Исправленный анимированный курсор
+    const cursor = document.querySelector('.cursor');
+    const cursorInner = document.querySelector('.cursor-inner');
+
+    document.addEventListener('mousemove', e => {
+        const x = e.clientX;
+        const y = e.clientY;
+        
+        cursor.style.transform = `translate(${x - 12}px, ${y - 12}px)`;
+        cursorInner.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // Эффекты при наведении
+    document.querySelectorAll('a, button, .course-card').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+            cursorInner.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+            cursorInner.classList.remove('hover');
+        });
+    });
+
+    // Исправленный счетчик
+    function animateNumbers() {
+        const counters = document.querySelectorAll('[data-count]');
+        const options = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-count');
+                    const duration = 2000;
+                    const startTime = Date.now();
+
+                    const updateCount = () => {
+                        const elapsed = Date.now() - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const current = Math.floor(progress * target);
+                        
+                        counter.textContent = current.toLocaleString();
+
+                        if(progress < 1) {
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            counter.textContent = target.toLocaleString();
+                        }
+                    };
+
+                    requestAnimationFrame(updateCount);
+                    observer.unobserve(counter);
+                }
+            });
+        }, options);
+
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    }
+
+    // Инициализация при полной загрузке
+    window.addEventListener('load', () => {
+        animateNumbers();
+        // Инициализация частиц (добавьте свою реализацию)
+    });
+
+    
+</script>
+<header>
+    <nav>
+        <a href="#" class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="code-logo">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#00cc6a;stop-opacity:1" />
+                    </linearGradient>
+                    <style>
+                        .code-logo { 
+                            width: 60px;
+                            height: 60px;
+                        }
+                        .logo-bracket {
+                            fill: none;
+                            stroke: url(#grad1);
+                            stroke-width: 8;
+                            stroke-linecap: round;
+                        }
+                    </style>
+                </defs>
+                <path class="logo-bracket" d="M50 100 L75 75 L125 75 L150 100 L125 125 L75 125 Z"/>
+                <path class="logo-bracket" d="M65 85 L80 100 L65 115" />
+                <path class="logo-bracket" d="M135 85 L120 100 L135 115" />
+            </svg>
+        </a>
+        <div class="nav-links">
+            <a href="#courses">Курсы</a>
+            <a href="#features">Преимущества</a>
+            <a href="#contact">Контакты</a>
+        </div>
+    </nav>
+</header>
+
+    <main>
+        <section class="hero">
+            <h1>Стань профессиональным разработчиком</h1>
+            <p>Онлайн-курсы программирования с практикой и трудоустройством</p>
+            <a href="#" class="cta-button">Начать обучение</a>
+        </section>
+
+        <section class="courses" id="courses">
+            <h2 class="section-title">Наши курсы</h2>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <h3>Full-Stack разработка</h3>
+                    <p>Изучите JavaScript, Node.js и React с нуля до профессионального уровня</p>
+                </div>
+                <div class="course-card">
+                    <h3>Python & Data Science</h3>
+                    <p>Машинное обучение, анализ данных и визуализация на Python</p>
+                </div>
+                <div class="course-card">
+                    <h3>Мобильная разработка</h3>
+                    <p>Создание iOS и Android приложений на Swift и Kotlin</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <h2 class="section-title">Наши преимущества</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-laptop-code"></i>
+                    <h4>Практические проекты</h4>
+                    <p>Реальные задачи из IT-индустрии</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Трудоустройство</h4>
+                    <p>Помощь в составлении резюме и собеседованиях</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-infinity"></i>
+                    <h4>Пожизненный доступ</h4>
+                    <p>Возможность повторять материал в любое время</p>
+                </div>
+            </div>
+        </section>
+        <section class="testimonials">
+            <h2 class="section-title">Отзывы выпускников</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">ЖУ</div>
+                        <div>
+                            <h4>Жанали Уртбаев</h4>
+                            <p>Python Developer в Yandex</p>
+                        </div>
+                    </div>
+                    <p>Лучшая инвестиция в себя! После курса по Data Science получил оффер с зарплатой в 2 раза выше предыдущей.</p>
+                    <div class="rating">
+                        ★★★★★
+                    </div>
+                </div>
+        
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">АА</div>
+                        <div>
+                            <h4>Артем Анискин</h4>
+                            <p>Team Lead в Тинькофф</p>
+                        </div>
+                    </div>
+                    <p>Преподаватели - практики из топовых компаний. Обучение максимально приближено к реальным задачам.</p>
+                    <div class="rating">
+                        ★★★★★
+                    </div>
+                </div>
+        
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-avatar">АБ</div>
+                        <div>
+                            <h4>Абласан Бакдаулет</h4>
+                            <p>iOS Developer</p>
+                        </div>
+                    </div>
+                    <p>С нуля освоил Swift за 4 месяца. Помогли с портфолио и подготовкой к собеседованиям. Очень благодарен!</p>
+                    <div class="rating">
+                        ★★★★★
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="portfolio" id="boss">
+            <div class="container">
+                <h2 class="section-title">Основатель академии</h2>
+                
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <img src="https://i.pravatar.cc/300?img=58" alt="Артем Волков" class="profile-avatar">
+                        <div class="profile-titles">
+                            <h3>Артем Волков</h3>
+                            <p>CTO → Tech Evangelist → Основатель CodeMaster</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-github"></i></a>
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-medium"></i></a>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="achievements-grid">
+                        <div class="achievement">
+                            <div class="achievement-icon">🚀</div>
+                            <h4>12+ лет в IT</h4>
+                            <p>От junior-разработчика до CTO в международных проектах</p>
+                        </div>
+                        
+                        <div class="achievement">
+                            <div class="achievement-icon">🎓</div>
+                            <h4>2300+ студентов</h4>
+                            <p>Лично провел 400+ часов менторских сессий</p>
+                        </div>
+                    </div>
+        
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2010-2014</div>
+                            <div class="timeline-content">
+                                <h5>Ведущий разработчик @Yandex</h5>
+                                <p>Руководил командой разработки поискового алгоритма</p>
+                            </div>
+                        </div>
+        
+                        <div class="timeline-item">
+                            <div class="timeline-year">2015-2018</div>
+                            <div class="timeline-content">
+                                <h5>CTO @EdTech Startup</h5>
+                                <p>Вывел продукт на международный рынок (2M+ пользователей)</p>
+                            </div>
+                        </div>
+        
+                        <div class="timeline-item">
+                            <div class="timeline-year">2019-н.в.</div>
+                            <div class="timeline-content">
+                                <h5>Основатель CodeMaster</h5>
+                                <p>Создал экосистему IT-образования с трудоустройством в 85% случаев</p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <blockquote class="boss-quote">
+                        "Наша миссия - ломать барьеры в IT-образовании. Не важно, 
+                        сколько вам лет и где вы живете – если есть страсть к коду, 
+                        мы сделаем из вас профессионала"
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>CodeMaster</h4>
+                <p>Академия современного программирования</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>email: info@codemaster.ru</p>
+                <p>тел: +7 (999) 123-45-67</p>
+            </div>
+            <div class="footer-section">
+                <h4>Социальные сети</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2024 CodeMaster Academy. Все права защищены
+        </div>
+    </footer>
+</body>
+</html>
